@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+    py-server:
+        build: 
+            context: ./web
+            dockerfile: Dockerfile
+        volumes:
+            - ./web:/usr/src/app
+        command: app.py
+        ports:
+            - 5000:5000
