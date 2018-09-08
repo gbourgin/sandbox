@@ -1,12 +1,25 @@
 version: '3.4'
 
 services:
-    py-server:
-        build: 
-            context: ./web
-            dockerfile: Dockerfile
+    backend-service:
+        build: ./backend
         volumes:
-            - ./web:/usr/src/app
+            - ./backend:/usr/src/app
         command: app.py
+        networks:
+            - web
+
+    nginx-service:
+        build: ./nginx
+        depends_on: 
+            - backend-service
         ports:
-            - 5000:5000
+            - 8002:80
+        volumes:
+            - ./nginx/conf.d:/etc/nginx/conf.d
+            - ./frontend/dist:/var/www
+        networks:
+            - web
+
+networks:
+    web:
